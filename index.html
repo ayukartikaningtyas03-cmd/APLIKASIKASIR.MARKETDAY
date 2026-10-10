@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir Market Day 🍹 Belanja Sambil Belajar</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        balsamiq: ['"Balsamiq Sans"', 'cursive'],
+                        nunito: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        choco: {
+                            50: '#fdf8f5',
+                            100: '#f8ece5',
+                            200: '#eed6c6',
+                            300: '#e1b79f',
+                            400: '#d29373',
+                            500: '#c57650',
+                            600: '#b85e3f',
+                            700: '#9a4a35',
+                        },
+                        berry: {
+                            100: '#fce7f3',
+                            300: '#f9a8d4',
+                            500: '#ec4899',
+                            600: '#db2777',
+                        },
+                        cream: {
+                            100: '#fffbeb',
+                            300: '#fde047',
+                            500: '#eab308',
+                        },
+                        matcha: {
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #fdf8f5;
+            background-image: radial-gradient(#e1b79f 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+        }
+
+        h1, h2, h3, .font-balsamiq {
+            font-family: 'Balsamiq Sans', cursive;
+        }
+
+        .bounce-on-hover:hover {
+            transform: translateY(-5px) scale(1.03);
+        }
+
+        .pop-click {
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .pop-click:active {
+            transform: scale(0.9);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8ece5;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d29373;
+            border-radius: 12px;
+            border: 2px solid #f8ece5;
+        }
+
+        @keyframes floatGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.3); transform: translateY(0); }
+            50% { box-shadow: 0 0 25px rgba(236, 72, 153, 0.6); transform: translateY(-3px); }
+        }
+
+        .float-glow {
+            animation: floatGlow 3s infinite ease-in-out;
+        }
+
+        /* Speech Bubble tail pointing to the mascot */
+        .speech-bubble {
+            position: relative;
+            background: #ffffff;
+            border-radius: 1.5rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 12px 14px 12px 0;
+            border-style: solid;
+            border-color: transparent #ffffff transparent transparent;
+            display: block;
+            width: 0;
+        }
+        @media (max-width: 640px) {
+            .speech-bubble::after {
+                left: 30px;
+                top: auto;
+                bottom: -12px;
+                transform: none;
+                border-width: 12px 12px 0;
+                border-color: #ffffff transparent transparent transparent;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col p-2 sm:p-4">
+
+    <header class="max-w-6xl mx-auto w-full bg-white/95 backdrop-blur border-4 border-choco-300 rounded-3xl p-3 sm:p-4 shadow-xl mb-4 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-cream-300 rounded-full mix-blend-multiply filter blur-2xl opacity-50 -translate-y-10 translate-x-10"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-berry-300 rounded-full mix-blend-multiply filter blur-2xl opacity-40 translate-y-10 -translate-x-10"></div>
+        
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10">
+            <div class="flex items-center space-x-3 w-full sm:w-auto">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-choco-100 rounded-2xl flex items-center justify-center text-3xl sm:text-4xl shadow-inner border-2 border-choco-300">
+                    🍹
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-choco-700 tracking-wide flex items-center gap-2">
+                        KASIR MARKET DAY
+                    </h1>
+                    <p class="text-xs sm:text-sm text-choco-500 font-bold">
+                        Bermain Kasir & Belajar Berhitung Bersama! ✨
+                    </p>
+                </div>
+            </div>
+
+            <!-- Global Action Controls -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto">
+                <button id="btnSoundToggle" onclick="toggleMute()" class="flex-1 sm:flex-none px-4 py-2.5 bg-slate-100 border-2 border-slate-300 text-slate-700 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition pop-click shadow">
+                    <i id="soundIcon" class="fa-solid fa-volume-high text-blue-500"></i>
+                    <span id="soundLabel">Suara: ON</span>
+                </button>
+                <button onclick="switchTab('cashier')" class="flex-1 sm:flex-none px-4 py-2.5 bg-berry-500 text-white border-2 border-berry-600 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-berry-600 transition pop-click shadow-md">
+                    <i class="fa-solid fa-store"></i> <span class="hidden sm:inline">Toko</span>
+                </button>
+                <button onclick="switchTab('settings')" class="flex-1 sm:flex-none px-4 py-2.5 bg-choco-100 text-choco-700 border-2 border-choco-300 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-choco-200 transition pop-click shadow-md">
+                    <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Atur Menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto w-full mb-5">
+        <div class="bg-gradient-to-r from-cream-100 via-white to-berry-100 border-3 border-choco-200 rounded-3xl p-3 sm:p-5 shadow-md flex flex-col sm:flex-row items-center gap-4">
+            
+            <!-- Mascot SVG (Chef Bear) -->
+            <div class="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 animate-bounce flex items-center justify-center bg-white rounded-full p-2 shadow-lg border-4 border-choco-200 relative">
+                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                    <!-- Background Circle -->
+                    <circle cx="50" cy="50" r="48" fill="#f8ece5" />
+                    <!-- Bear Ears -->
+                    <circle cx="28" cy="35" r="14" fill="#8B4513" />
+                    <circle cx="72" cy="35" r="14" fill="#8B4513" />
+                    <!-- Inner Ears -->
+                    <circle cx="28" cy="35" r="7" fill="#F4A460" />
+                    <circle cx="72" cy="35" r="7" fill="#F4A460" />
+                    <!-- Bear Face -->
+                    <circle cx="50" cy="55" r="35" fill="#DEB887" />
+                    <!-- Snout Area -->
+                    <ellipse cx="50" cy="65" rx="15" ry="12" fill="#FFE4C4" />
+                    <!-- Nose -->
+                    <ellipse cx="50" cy="62" rx="6" ry="4" fill="#3E2723" />
+                    <!-- Mouth -->
+                    <path d="M 44 68 Q 50 72 56 68" fill="none" stroke="#3E2723" stroke-width="2.5" stroke-linecap="round" />
+                    <!-- Eyes -->
+                    <circle cx="38" cy="48" r="4.5" fill="#3E2723" />
+                    <circle cx="62" cy="48" r="4.5" fill="#3E2723" />
+                    <circle cx="39" cy="46.5" r="1.5" fill="#FFF" />
+                    <circle cx="63" cy="46.5" r="1.5" fill="#FFF" />
+                    <!-- Blush -->
+                    <ellipse cx="30" cy="56" rx="5" ry="3" fill="#FF9800" opacity="0.4"/>
+                    <ellipse cx="70" cy="56" rx="5" ry="3" fill="#FF9800" opacity="0.4"/>
+                    <!-- Chef Hat -->
+                    <path d="M 25 35 Q 20 15 35 15 Q 50 0 65 15 Q 80 15 75 35 Z" fill="#FFF" stroke="#D7CCC8" stroke-width="2" />
+                    <rect x="30" y="32" width="40" height="8" rx="4" fill="#FFF" stroke="#D7CCC8" stroke-width="2" />
+                </svg>
+                <div class="absolute -bottom-2 -right-2 bg-berry-500 text-white text-xs font-bold px-2 py-1 rounded-full border-2 border-white shadow">Chef Beri</div>
+            </div>
+            
+            <div class="flex-1 w-full text-center sm:text-left">
+                <div class="speech-bubble p-4 text-sm sm:text-base font-bold text-choco-700 shadow-sm border-2 border-choco-100 flex items-center justify-between gap-3">
+                    <span id="mascotText">Halo Koki Kecil! Pilih jajanan yang mau dibeli, lalu kita hitung total belanjaannya bersama-sama!</span>
+                    <button onclick="replayVoice()" class="w-10 h-10 flex-shrink-0 bg-cream-500 hover:bg-cream-600 text-white rounded-full flex items-center justify-center text-lg shadow-md pop-click border-2 border-cream-600" title="Ulangi Suara">
+                        <i class="fa-solid fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 mb-8">
+
+        <!-- ================= VIEW 1: PENGATURAN MENU (Disembunyikan secara default) ================= -->
+        <section id="settingsTab" class="hidden lg:col-span-12 bg-white rounded-3xl border-4 border-choco-300 p-5 sm:p-8 shadow-2xl relative overflow-hidden">
+            <!-- Dekorasi Latar -->
+            <i class="fa-solid fa-cookie-bite absolute -right-10 -bottom-10 text-9xl text-choco-50 opacity-50 transform rotate-12"></i>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-4 border-b-2 border-choco-100 relative z-10">
+                <div class="mb-4 sm:mb-0">
+                    <h2 class="text-3xl font-balsamiq text-choco-700 flex items-center gap-3">
+                        <i class="fa-solid fa-clipboard-list text-berry-500"></i> Pengaturan Menu & Harga
+                    </h2>
+                    <p class="text-sm text-slate-500 font-bold mt-1">
+                        Bunda atau Guru bisa menyesuaikan harga jajanan dengan uang mainan anak.
+                    </p>
+                </div>
+                <button onclick="switchTab('cashier')" class="bg-matcha-500 hover:bg-matcha-600 text-white px-6 py-3 rounded-2xl font-bold text-lg shadow-lg pop-click flex items-center gap-2 border-2 border-matcha-600">
+                    <i class="fa-solid fa-play"></i> Mulai Main!
+                </button>
+            </div>
+
+            <!-- Grid Menu Saat Ini -->
+            <div id="settingsMenuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 relative z-10">
+                <!-- Dirender oleh JavaScript -->
+            </div>
+
+            <!-- Form Tambah Menu Baru -->
+            <div class="mt-10 p-5 bg-cream-50 rounded-2xl border-2 border-dashed border-cream-500 relative z-10">
+                <h3 class="text-xl font-balsamiq text-choco-700 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-cream-500"></i> Tambah Menu Baru
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <div class="md:col-span-4">
+                        <label class="block text-xs font-bold text-choco-600 mb-1 uppercase tracking-wider">Nama Jajanan</label>
+                        <input type="text" id="newItemName" placeholder="Contoh: Jasuke Keju" class="w-full px-4 py-3 rounded-xl border-2 border-choco-200 font-bold focus:outline-none focus:border-berry-400 bg-white shadow-inner">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-xs font-bold text-choco-600 mb-1 uppercase tracking-wider">Harga (Rp)</label>
+                        <input type="number" id="newItemPrice" placeholder="5000" step="1000" class="w-full px-4 py-3 rounded-xl border-2 border-choco-200 font-bold focus:outline-none focus:border-berry-400 bg-white shadow-inner">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-xs font-bold text-choco-600 mb-1 uppercase tracking-wider">Gambar Ikon</label>
+                        <select id="newItemEmoji" class="w-full px-4 py-3 rounded-xl border-2 border-choco-200 font-bold text-xl focus:outline-none focus:border-berry-400 bg-white shadow-inner appearance-none">
+                            <option value="🌽">🌽 Jasuke</option>
+                            <option value="🍩">🍩 Donat</option>
+                            <option value="🥗">🥗 Salad Buah</option>
+                            <option value="🍹">🍹 Jus Buah</option>
+                            <option value="🧁">🧁 Cupcake</option>
+                            <option value="🥐">🥐 Croissant</option>
+                            <option value="🍪">🍪 Kukis</option>
+                            <option value="🍦">🍦 Es Krim</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2 flex items-end">
+                        <button onclick="addNewMenuItem()" class="w-full h-12 md:h-[52px] bg-choco-600 hover:bg-choco-700 text-white font-bold rounded-xl shadow pop-click flex items-center justify-center gap-2 border-b-4 border-choco-800 active:border-b-0 active:mt-1">
+                            <i class="fa-solid fa-plus"></i> Tambah
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= VIEW 2: HALAMAN KASIR UTAMA ================= -->
+        
+        <section id="cashierMenuSection" class="lg:col-span-7 flex flex-col gap-5">
+
+            <!-- Daftar Etalase Kue -->
+            <div class="bg-white border-4 border-berry-200 rounded-3xl p-4 sm:p-5 shadow-lg flex-1">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl sm:text-2xl font-balsamiq text-berry-600 flex items-center gap-2">
+                        <i class="fa-solid fa-shop"></i> Etalase Jajanan
+                    </h2>
+                    <span class="text-xs bg-berry-100 text-berry-700 font-bold px-3 py-1.5 rounded-full border border-berry-200 animate-pulse">
+                        Klik jajanan untuk membeli!
+                    </span>
+                </div>
+
+                <!-- Kontainer Tombol Menu -->
+                <div id="itemsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                    <!-- JavaScript akan memuat item di sini -->
+                </div>
+            </div>
+
+            <!-- Keranjang Belanja & Perhitungan -->
+            <div class="bg-white border-4 border-choco-200 rounded-3xl p-4 sm:p-5 shadow-lg relative">
+                <div class="flex justify-between items-center mb-4 pb-3 border-b-2 border-slate-100">
+                    <h2 class="text-xl font-balsamiq text-choco-700 flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-choco-500"></i> Nampan Belanjaan
+                    </h2>
+                    <button onclick="clearCart()" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 font-bold px-3 py-2 rounded-xl transition pop-click border border-red-200 flex items-center gap-1 shadow-sm">
+                        <i class="fa-solid fa-trash-can"></i> Kosongkan
+                    </button>
+                </div>
+
+                <!-- Isi Keranjang -->
+                <div id="cartItemsContainer" class="space-y-3 max-h-56 overflow-y-auto pr-2 mb-4">
+                    <div class="flex flex-col items-center justify-center py-8 text-slate-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-2 opacity-50"></i>
+                        <p class="font-bold text-sm">Nampan masih kosong.</p>
+                        <p class="text-xs">Yuk pilih jajanan di etalase atas!</p>
+                    </div>
+                </div>
+
+                <!-- Papan Visualisasi Penjumlahan -->
+                <div class="p-4 bg-cream-50 rounded-2xl border-2 border-cream-200 shadow-inner">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="flex items-center gap-2 text-slate-600 font-bold text-sm">
+                            <i class="fa-solid fa-calculator text-berry-500"></i> Proses Penjumlahan:
+                        </div>
+                        <button onclick="speakAddition()" class="bg-berry-100 hover:bg-berry-200 text-berry-700 text-xs px-3 py-1.5 rounded-xl font-bold transition pop-click shadow-sm border border-berry-300 flex items-center gap-1">
+                            <i class="fa-solid fa-volume-up"></i> Dengarkan
+                        </button>
+                    </div>
+                    
+                    <!-- Rumus Panjang -->
+                    <div id="cartSumMath" class="text-choco-600 font-bold text-sm sm:text-base leading-relaxed break-words bg-white p-2 rounded-xl border border-cream-200 mb-3 min-h-[40px] flex items-center">
+                        Rp 0
+                    </div>
+
+                    <div class="flex justify-between items-center border-t-2 border-cream-200 pt-3">
+                        <span class="text-lg sm:text-xl font-balsamiq text-choco-800">Total Harus Dibayar:</span>
+                        <span id="cartTotalDisplay" class="text-2xl sm:text-3xl font-black text-berry-600 bg-berry-50 px-4 py-1 rounded-xl border-2 border-berry-200">
+                            Rp 0
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="paymentSection" class="lg:col-span-5 flex flex-col gap-5">
+
+            <!-- Mesin Kasir (Penerimaan Uang) -->
+            <div class="bg-white border-4 border-matcha-200 rounded-3xl p-4 sm:p-5 shadow-lg flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-balsamiq text-matcha-700 flex items-center gap-2">
+                        <i class="fa-solid fa-cash-register text-matcha-500"></i> Mesin Kasir
+                    </h2>
+                    <span class="text-xs bg-matcha-100 text-matcha-800 font-bold px-3 py-1 rounded-full border border-matcha-200">
+                        Uang dari Pembeli
+                    </span>
+                </div>
+
+                <!-- Layar Uang Masuk -->
+                <div class="bg-slate-800 rounded-2xl p-4 mb-5 text-right relative shadow-inner border-4 border-slate-700">
+                    <span class="text-xs text-matcha-400 font-bold uppercase tracking-wider block mb-1 text-left">Uang Diterima:</span>
+                    <div id="paidAmountDisplay" class="text-4xl sm:text-5xl font-black text-matcha-400 font-mono tracking-tighter">
+                        0
+                    </div>
+                    <button onclick="clearPayment()" class="absolute left-4 bottom-4 text-xs bg-slate-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold transition pop-click">
+                        RESET UANG
+                    </button>
+                </div>
+
+                <!-- Tombol Uang Kertas Rupiah -->
+                <p class="text-xs font-bold text-slate-500 mb-3 text-center bg-slate-50 py-1 rounded-lg">Klik uang yang diberikan pembeli:</p>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <!-- Pecahan 1.000 -->
+                    <button onclick="addMoney(1000)" class="relative p-2 bg-[#fefce8] hover:bg-[#fef08a] border-2 border-[#ca8a04] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#ca8a04] text-lg">Rp 1.000</span>
+                        <span class="text-[10px] font-bold text-[#a16207]">Seribu</span>
+                    </button>
+
+                    <!-- Pecahan 2.000 -->
+                    <button onclick="addMoney(2000)" class="relative p-2 bg-[#f1f5f9] hover:bg-[#cbd5e1] border-2 border-[#64748b] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#475569] text-lg">Rp 2.000</span>
+                        <span class="text-[10px] font-bold text-[#334155]">Dua Ribu</span>
+                    </button>
+
+                    <!-- Pecahan 5.000 -->
+                    <button onclick="addMoney(5000)" class="relative p-2 bg-[#fff7ed] hover:bg-[#ffedd5] border-2 border-[#d97706] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#d97706] text-lg">Rp 5.000</span>
+                        <span class="text-[10px] font-bold text-[#b45309]">Lima Ribu</span>
+                    </button>
+
+                    <!-- Pecahan 10.000 -->
+                    <button onclick="addMoney(10000)" class="relative p-2 bg-[#f5f3ff] hover:bg-[#ede9fe] border-2 border-[#7c3aed] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#7c3aed] text-lg">Rp 10.000</span>
+                        <span class="text-[10px] font-bold text-[#6d28d9]">Sepuluh Ribu</span>
+                    </button>
+                    
+                    <!-- Pecahan 20.000 -->
+                    <button onclick="addMoney(20000)" class="relative p-2 bg-[#f0fdf4] hover:bg-[#dcfce7] border-2 border-[#16a34a] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#16a34a] text-lg">Rp 20.000</span>
+                        <span class="text-[10px] font-bold text-[#15803d]">Dua Puluh Ribu</span>
+                    </button>
+
+                    <!-- Pecahan 50.000 -->
+                    <button onclick="addMoney(50000)" class="relative p-2 bg-[#eff6ff] hover:bg-[#dbeafe] border-2 border-[#2563eb] rounded-xl flex flex-col items-center justify-center pop-click shadow group overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-10 text-4xl group-hover:scale-110 transition-transform">💵</div>
+                        <span class="font-black text-[#2563eb] text-lg">Rp 50.000</span>
+                        <span class="text-[10px] font-bold text-[#1d4ed8]">Lima Puluh Ribu</span>
+                    </button>
+                </div>
+
+                <!-- Tombol Proses Bayar -->
+                <div class="mt-auto">
+                    <button onclick="calculateTransaction()" class="w-full py-4 bg-matcha-500 hover:bg-matcha-600 text-white font-black text-xl rounded-2xl shadow-[0_6px_0_#16a34a] active:shadow-[0_0px_0_#16a34a] active:translate-y-[6px] border-2 border-matcha-600 flex items-center justify-center gap-3 transition-all float-glow">
+                        <i class="fa-solid fa-receipt text-2xl"></i>
+                        PROSES BAYAR!
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kartu Hasil Transaksi (Struk & Kembalian) -->
+            <div id="resultCard" class="bg-white border-4 border-blue-200 rounded-3xl p-4 shadow-lg overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full z-0"></div>
+                <h3 class="text-lg font-balsamiq text-blue-800 mb-3 flex items-center gap-2 relative z-10">
+                    <i class="fa-solid fa-money-bill-transfer text-blue-500"></i> Hasil Hitung Kembalian
+                </h3>
+                
+                <div id="resultContent" class="bg-blue-50 border-2 border-dashed border-blue-300 rounded-2xl p-4 text-sm font-bold text-slate-700 leading-relaxed relative z-10 min-h-[120px] flex items-center justify-center text-center">
+                    Klik tombol <span class="text-matcha-600 mx-1 uppercase">"Proses Bayar!"</span> di atas untuk melihat apakah uangnya cukup dan hitung kembaliannya!
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="max-w-6xl mx-auto w-full text-center pb-4 pt-2 text-sm text-choco-500 font-bold flex flex-col sm:flex-row justify-center items-center gap-2">
+        <span>Aplikasi Kasir Market Day 🍹</span> 
+        <span class="hidden sm:inline">•</span>
+        <span>Belajar Matematika dengan Menyenangkan</span>
+    </footer>
+
+    <script>
+        // --- SISTEM AUDIO (SFX) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    // Bunyi Pop
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'cash') {
+                    // Bunyi mesin kasir Cha-ching
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(1000, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(1400, audioCtx.currentTime + 0.1); 
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'error') {
+                    // Bunyi tet-tot
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'success') {
+                    // Bunyi magis Tadaa!
+                    const notes = [523.25, 659.25, 783.99, 1046.50]; // C E G C
+                    notes.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.1));
+                        g.gain.setValueAtTime(0.2, audioCtx.currentTime + (idx * 0.1));
+                        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (idx * 0.1) + 0.3);
+                        o.start(audioCtx.currentTime + (idx * 0.1));
+                        o.stop(audioCtx.currentTime + (idx * 0.1) + 0.3);
+                    });
+                }
+            } catch (e) {
+                console.log("Audio not ready:", e);
+            }
+        }
+
+        // --- SISTEM SUARA (TEXT TO SPEECH) ---
+        let isMuted = false;
+        let lastSpokenText = "";
+
+        function speak(text) {
+            lastSpokenText = text;
+            // Update teks di bubble mascot
+            document.getElementById('mascotText').innerText = text;
+
+            if (isMuted) return;
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Hentikan suara sebelumnya
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.85; // Diperlambat sedikit agar jelas untuk anak
+                utterance.pitch = 1.3; // Suara sedikit melengking lucu
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function replayVoice() {
+            playSound('click');
+            if (lastSpokenText) {
+                speak(lastSpokenText);
+            } else {
+                speak("Halo! Selamat datang di Kasir Market Day!");
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('soundIcon');
+            const label = document.getElementById('soundLabel');
+            if (isMuted) {
+                window.speechSynthesis.cancel();
+                icon.className = "fa-solid fa-volume-xmark text-slate-400";
+                label.innerText = "Suara: MATI";
+                document.getElementById('btnSoundToggle').classList.replace('bg-slate-100', 'bg-red-50');
+            } else {
+                icon.className = "fa-solid fa-volume-high text-blue-500";
+                label.innerText = "Suara: ON";
+                document.getElementById('btnSoundToggle').classList.replace('bg-red-50', 'bg-slate-100');
+                playSound('click');
+                speak("Suara diaktifkan!");
+            }
+        }
+        
+
+        // Data Awal Menu Kue
+        let menuItems = [
+            { id: 'jasuke', name: 'Jasuke Keju', price: 5000, emoji: '🌽', bg: 'bg-yellow-100 border-yellow-300 text-yellow-900' },
+            { id: 'donat', name: 'Donat Manis', price: 3000, emoji: '🍩', bg: 'bg-orange-100 border-orange-300 text-orange-900' },
+            { id: 'jus', name: 'Jus Buah Segar', price: 4000, emoji: '🍹', bg: 'bg-pink-100 border-pink-300 text-pink-900' },
+            { id: 'salad', name: 'Salad Buah', price: 8000, emoji: '🥗', bg: 'bg-green-100 border-green-300 text-green-900' }
+        ];
+
+        let cart = {};
+        let paidAmount = 0;
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenuItems();
+            renderSettingsMenu();
+            updateCartDisplay();
+            // Memberi sapaan awal
+            setTimeout(() => {
+                speak("Halo Koki Kecil! Pilih kue yang mau dibeli, lalu kita hitung bersama!");
+            }, 500);
+        });
+
+        // 1. Render Menu di Halaman Kasir
+        function renderMenuItems() {
+            const grid = document.getElementById('itemsGrid');
+            grid.innerHTML = '';
+
+            menuItems.forEach(item => {
+                const btn = document.createElement('button');
+                btn.onclick = () => addToCart(item.id);
+                // Style dinamis atau fallback jika item baru (custom)
+                const bgClass = item.bg || 'bg-white border-slate-300 text-slate-800';
+                
+                btn.className = `${bgClass} p-3 rounded-2xl border-b-4 hover:border-b-0 hover:mt-1 border-t-2 border-x-2 flex flex-col items-center justify-between transition-all pop-click relative group h-32`;
+                
+                btn.innerHTML = `
+                    <div class="text-4xl sm:text-5xl mb-2 mt-1 group-hover:scale-110 group-hover:rotate-6 transition-transform transform origin-bottom">
+                        ${item.emoji}
+                    </div>
+                    <div class="text-center w-full">
+                        <div class="font-bold text-sm leading-tight truncate px-1">${item.name}</div>
+                        <div class="text-xs font-black bg-white/60 px-2 py-0.5 rounded-full mt-1 border border-black/10 inline-block shadow-sm">
+                            Rp ${item.price.toLocaleString('id-ID')}
+                        </div>
+                    </div>
+                    <div class="absolute -top-2 -right-2 bg-matcha-500 text-white w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center shadow border-2 border-white">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        // 2. Render Menu di Halaman Pengaturan (Atur Harga)
+        function renderSettingsMenu() {
+            const grid = document.getElementById('settingsMenuGrid');
+            grid.innerHTML = '';
+
+            menuItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-2xl border-2 border-choco-200 shadow-sm flex flex-col";
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-slate-100">
+                        <span class="text-4xl bg-slate-50 w-12 h-12 flex items-center justify-center rounded-xl border border-slate-100">${item.emoji}</span>
+                        <div class="flex-1">
+                            <input type="text" value="${item.name}" onchange="updateItemName('${item.id}', this.value)" class="font-bold text-sm bg-slate-50 px-2 py-1.5 rounded-lg border border-slate-200 w-full mb-1 focus:outline-none focus:border-choco-400">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Harga (Rupiah)</label>
+                        <div class="flex gap-2">
+                            <input type="number" step="1000" value="${item.price}" onchange="updateItemPrice('${item.id}', this.value)" class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 font-black text-slate-700 bg-slate-50 focus:outline-none focus:border-choco-400 text-sm">
+                            <button onclick="deleteMenuItem('${item.id}')" class="bg-red-50 hover:bg-red-100 text-red-500 w-10 rounded-xl border border-red-200 flex items-center justify-center pop-click shadow-sm" title="Hapus Menu">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+
+        // Berpindah Antar Tab (Kasir / Pengaturan)
+        function switchTab(tabName) {
+            playSound('click');
+            const cashierSection = document.getElementById('cashierMenuSection');
+            const paymentSection = document.getElementById('paymentSection');
+            const settingsTab = document.getElementById('settingsTab');
+
+            if (tabName === 'settings') {
+                cashierSection.classList.add('hidden');
+                paymentSection.classList.add('hidden');
+                settingsTab.classList.remove('hidden');
+                speak("Mode pengaturan menu. Ayah, Bunda, atau Guru bisa mengubah nama dan harga jajanan di sini.");
+            } else {
+                settingsTab.classList.add('hidden');
+                cashierSection.classList.remove('hidden');
+                paymentSection.classList.remove('hidden');
+                speak("Kembali ke Toko!");
+            }
+        }
+
+        // Membuat kalimat penjumlahan untuk diucapkan
+        function getAdditionSpeechText() {
+            let mathNumbers = [];
+            let grandTotal = 0;
+
+            Object.keys(cart).forEach(key => {
+                const entry = cart[key];
+                for(let i = 0; i < entry.qty; i++) {
+                    mathNumbers.push(entry.item.price);
+                    grandTotal += entry.item.price;
+                }
+            });
+
+            if (mathNumbers.length === 0) {
+                return "Keranjang belanjaan masih kosong.";
+            } else if (mathNumbers.length === 1) {
+                return `Total harganya ${mathNumbers[0].toLocaleString('id-ID')} rupiah.`;
+            } else {
+                // Contoh: "2.000 ditambah 1.000 sama dengan 3.000 rupiah"
+                const formula = mathNumbers.map(n => n.toLocaleString('id-ID')).join(" ditambah ");
+                return `${formula} sama dengan ${grandTotal.toLocaleString('id-ID')} rupiah!`;
+            }
+        }
+
+        function speakAddition() {
+            playSound('click');
+            const text = getAdditionSpeechText();
+            speak(text);
+        }
+
+        function addToCart(itemId) {
+            playSound('click');
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].qty += 1;
+            } else {
+                cart[itemId] = { item: item, qty: 1 };
+            }
+            
+            updateCartDisplay();
+            speak(`${item.name} ditambahkan ke nampan.`);
+        }
+
+        function changeQty(itemId, change) {
+            playSound('click');
+            if (!cart[itemId]) return;
+            
+            cart[itemId].qty += change;
+            
+            if (cart[itemId].qty <= 0) {
+                delete cart[itemId];
+            }
+            updateCartDisplay();
+            
+            if (Object.keys(cart).length > 0) {
+                speak(getAdditionSpeechText());
+            } else {
+                speak("Nampan belanjaan sekarang kosong.");
+            }
+        }
+
+        function clearCart() {
+            playSound('click');
+            cart = {};
+            updateCartDisplay();
+            speak("Nampan belanjaan dibersihkan. Yuk pilih jajanan lagi!");
+        }
+
+        // Memperbarui UI Keranjang dan Rumus Penjumlahan
+        function updateCartDisplay() {
+            const container = document.getElementById('cartItemsContainer');
+            const sumMath = document.getElementById('cartSumMath');
+            const totalDisplay = document.getElementById('cartTotalDisplay');
+
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-8 text-slate-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-2 opacity-50"></i>
+                        <p class="font-bold text-sm">Nampan masih kosong.</p>
+                        <p class="text-xs">Yuk pilih jajanan di etalase atas!</p>
+                    </div>
+                `;
+                sumMath.innerHTML = `<span class="text-slate-400 italic font-normal">Belum ada perhitungan...</span>`;
+                totalDisplay.innerText = "Rp 0";
+                return;
+            }
+
+            container.innerHTML = '';
+            let grandTotal = 0;
+            let mathParts = [];
+
+            keys.forEach(key => {
+                const entry = cart[key];
+                const itemTotal = entry.item.price * entry.qty;
+                grandTotal += itemTotal;
+
+                for(let i = 0; i < entry.qty; i++) {
+                    mathParts.push(`<span class="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-md mx-0.5 border border-blue-200 shadow-sm">${entry.item.price.toLocaleString('id-ID')}</span>`);
+                }
+
+                const itemRow = document.createElement('div');
+                itemRow.className = "flex items-center justify-between p-2.5 bg-white rounded-2xl border-2 border-slate-100 shadow-sm";
+                itemRow.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl sm:text-3xl bg-slate-50 w-10 h-10 flex items-center justify-center rounded-xl border border-slate-100">${entry.item.emoji}</span>
+                        <div>
+                            <span class="font-black text-slate-700 block text-sm">${entry.item.name}</span>
+                            <span class="text-choco-500 font-bold text-xs">Rp ${entry.item.price.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <button onclick="changeQty('${key}', -1)" class="w-7 h-7 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg font-black flex items-center justify-center pop-click">-</button>
+                        <span class="font-black text-slate-800 text-sm w-5 text-center">${entry.qty}</span>
+                        <button onclick="changeQty('${key}', 1)" class="w-7 h-7 bg-matcha-100 hover:bg-matcha-200 text-matcha-700 rounded-lg font-black flex items-center justify-center pop-click">+</button>
+                    </div>
+                `;
+                container.appendChild(itemRow);
+            });
+
+            // Menyusun Rumus Visual
+            sumMath.innerHTML = mathParts.join(' <i class="fa-solid fa-plus text-[10px] text-slate-400"></i> ') + 
+                              ' <i class="fa-solid fa-equals text-[10px] text-slate-400 mx-2"></i> ' + 
+                              `<span class="inline-block px-2 py-0.5 bg-berry-100 text-berry-700 rounded-md border border-berry-300 shadow-sm font-black">Rp ${grandTotal.toLocaleString('id-ID')}</span>`;
+            
+            totalDisplay.innerText = `Rp ${grandTotal.toLocaleString('id-ID')}`;
+        }
+
+
+        // Menambah jumlah uang yang dibayarkan
+        function addMoney(amount) {
+            playSound('click');
+            paidAmount += amount;
+            // Format tanpa 'Rp' agar terlihat seperti kalkulator angka besar
+            document.getElementById('paidAmountDisplay').innerText = paidAmount.toLocaleString('id-ID');
+            speak(`Uang masuk ${amount.toLocaleString('id-ID')} rupiah.`);
+        }
+
+        function clearPayment() {
+            playSound('click');
+            paidAmount = 0;
+            document.getElementById('paidAmountDisplay').innerText = "0";
+            speak("Uang pembeli direset jadi nol.");
+        }
+
+        // Proses Utama: Validasi Pembayaran & Hitung Pengurangan
+        function calculateTransaction() {
+            const grandTotal = Object.values(cart).reduce((sum, entry) => sum + (entry.item.price * entry.qty), 0);
+            const resultContent = document.getElementById('resultContent');
+
+            if (grandTotal === 0) {
+                playSound('error');
+                const msg = "Tunggu dulu! Nampannya masih kosong. Pilih jajanan dulu ya!";
+                resultContent.innerHTML = `<div class="text-red-500 flex flex-col items-center gap-2"><i class="fa-solid fa-circle-exclamation text-3xl mb-1"></i><span>${msg}</span></div>`;
+                speak(msg);
+                return;
+            }
+
+            if (paidAmount < grandTotal) {
+                playSound('error');
+                const shortage = grandTotal - paidAmount;
+                const msg = `Total belanjanya Rp ${grandTotal.toLocaleString('id-ID')}. Tapi uangnya baru Rp ${paidAmount.toLocaleString('id-ID')}. Wah, uangnya kurang Rp ${shortage.toLocaleString('id-ID')} lagi!`;
+                
+                resultContent.innerHTML = `
+                    <div class="w-full text-left">
+                        <div class="text-red-600 font-black text-base sm:text-lg mb-2 flex items-center gap-2 border-b-2 border-red-200 pb-2">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i> YAAH, UANGNYA KURANG!
+                        </div>
+                        <ul class="space-y-1 mb-3 text-slate-600">
+                            <li>Total Harga: <b class="text-slate-800">Rp ${grandTotal.toLocaleString('id-ID')}</b></li>
+                            <li>Uang Diterima: <b class="text-slate-800">Rp ${paidAmount.toLocaleString('id-ID')}</b></li>
+                        </ul>
+                        <div class="bg-red-50 p-3 rounded-xl border border-red-200">
+                            <span class="block text-xs font-bold text-red-500 uppercase mb-1">Pengurangan (Kekurangan):</span>
+                            <div class="font-mono font-black text-lg text-red-700">
+                                ${grandTotal.toLocaleString('id-ID')} - ${paidAmount.toLocaleString('id-ID')} = <span class="bg-red-200 px-2 py-0.5 rounded">Rp ${shortage.toLocaleString('id-ID')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                speak(msg);
+                return;
+            }
+
+            // Transaksi Sukses
+            playSound('cash');
+            setTimeout(() => playSound('success'), 400); // Mainkan nada sukses setelah suara kasir
+            
+            const change = paidAmount - grandTotal;
+            let explanationText = "";
+            let htmlDetail = "";
+
+            if (change === 0) {
+                // Kasus Uang Pas
+                explanationText = `Hore! Total belanjaan Rp ${grandTotal.toLocaleString('id-ID')}. Uangnya Rp ${paidAmount.toLocaleString('id-ID')}. Uangnya PAS! Tidak ada kembalian. Terima kasih sudah jajan!`;
+                
+                htmlDetail = `
+                    <div class="w-full text-left">
+                        <div class="text-matcha-600 font-black text-base sm:text-lg mb-2 flex items-center gap-2 border-b-2 border-matcha-200 pb-2">
+                            <i class="fa-solid fa-circle-check text-2xl"></i> TRANSAKSI BERHASIL!
+                        </div>
+                        <ul class="space-y-1 mb-3 text-slate-600">
+                            <li>Total Harga: <b class="text-slate-800">Rp ${grandTotal.toLocaleString('id-ID')}</b></li>
+                            <li>Uang Dibayar: <b class="text-slate-800">Rp ${paidAmount.toLocaleString('id-ID')}</b></li>
+                        </ul>
+                        <div class="bg-matcha-100 p-3 rounded-xl border-2 border-matcha-300 text-center animate-pulse">
+                            <span class="font-black text-matcha-700 text-lg">🎉 UANGNYA PAS! 🎉</span>
+                            <p class="text-sm text-matcha-600">Tidak perlu uang kembalian.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Kasus Ada Kembalian (Perlu Pengurangan)
+                explanationText = `Hore! Uang diterima Rp ${paidAmount.toLocaleString('id-ID')}. Total harga Rp ${grandTotal.toLocaleString('id-ID')}. Kita kurangi ya! Rp ${paidAmount.toLocaleString('id-ID')} dikurangi Rp ${grandTotal.toLocaleString('id-ID')}, hasilnya adalah Rp ${change.toLocaleString('id-ID')}. Ini uang kembaliannya!`;
+
+                htmlDetail = `
+                    <div class="w-full text-left">
+                        <div class="text-matcha-600 font-black text-base sm:text-lg mb-2 flex items-center gap-2 border-b-2 border-matcha-200 pb-2">
+                            <i class="fa-solid fa-circle-check text-2xl"></i> TRANSAKSI BERHASIL!
+                        </div>
+                        <ul class="space-y-1 mb-3 text-slate-600">
+                            <li>Uang Diterima: <b class="text-slate-800">Rp ${paidAmount.toLocaleString('id-ID')}</b></li>
+                            <li>Total Harga: <b class="text-slate-800">Rp ${grandTotal.toLocaleString('id-ID')}</b></li>
+                        </ul>
+                        <div class="bg-blue-100 p-3 rounded-xl border-2 border-blue-300">
+                            <span class="block text-xs font-bold text-blue-600 uppercase mb-1">Rumus Kembalian (Pengurangan):</span>
+                            <div class="flex items-center flex-wrap gap-2 text-lg sm:text-xl font-mono font-black text-blue-800">
+                                <span class="bg-white px-2 py-0.5 rounded shadow-sm">${paidAmount.toLocaleString('id-ID')}</span> 
+                                <i class="fa-solid fa-minus text-sm text-blue-400"></i>
+                                <span class="bg-white px-2 py-0.5 rounded shadow-sm">${grandTotal.toLocaleString('id-ID')}</span>
+                                <i class="fa-solid fa-equals text-sm text-blue-400"></i>
+                                <span class="bg-blue-600 text-white px-3 py-1 rounded-lg border-2 border-blue-800 shadow-md transform scale-110 ml-2">Rp ${change.toLocaleString('id-ID')}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultContent.innerHTML = htmlDetail;
+            speak(explanationText);
+        }
+
+
+        function updateItemPrice(id, newPrice) {
+            const item = menuItems.find(i => i.id === id);
+            if (item) {
+                item.price = parseInt(newPrice) || 0;
+                renderMenuItems();
+                updateCartDisplay();
+            }
+        }
+
+        function updateItemName(id, newName) {
+            const item = menuItems.find(i => i.id === id);
+            if (item && newName.trim() !== "") {
+                item.name = newName.trim();
+                renderMenuItems();
+                updateCartDisplay();
+            }
+        }
+
+        function deleteMenuItem(id) {
+            if (menuItems.length <= 1) {
+                speak("Ups! Toko tidak boleh kosong. Minimal harus ada 1 jajanan ya!");
+                return;
+            }
+            // Konfirmasi dihapus demi kelancaran (bisa ditambah confirm JS tapi sesuai aturan dilarang, jadi langsung hapus)
+            menuItems = menuItems.filter(i => i.id !== id);
+            delete cart[id]; // Hapus dari keranjang juga jika ada
+            renderMenuItems();
+            renderSettingsMenu();
+            updateCartDisplay();
+            playSound('click');
+            speak("Menu berhasil dihapus.");
+        }
+
+        function addNewMenuItem() {
+            playSound('click');
+            const nameInput = document.getElementById('newItemName');
+            const priceInput = document.getElementById('newItemPrice');
+            const emojiSelect = document.getElementById('newItemEmoji');
+
+            const name = nameInput.value.trim();
+            const price = parseInt(priceInput.value);
+            const emoji = emojiSelect.value;
+
+            if (!name || isNaN(price) || price <= 0) {
+                speak("Tolong isi nama dan harganya dengan benar ya!");
+                // Visual feedback error
+                nameInput.classList.add('border-red-500');
+                setTimeout(() => nameInput.classList.remove('border-red-500'), 1500);
+                return;
+            }
+
+            const id = 'custom_' + Date.now();
+            menuItems.push({
+                id,
+                name,
+                price,
+                emoji,
+                bg: 'bg-white border-slate-300 text-slate-800' // Custom items get default style
+            });
+
+            // Kosongkan form
+            nameInput.value = '';
+            priceInput.value = '';
+
+            renderMenuItems();
+            renderSettingsMenu();
+            playSound('success');
+            speak(`Yey! Jajanan baru ${name} berhasil ditambahkan ke etalase!`);
+        }
+    </script>
+</body>
+</html>
